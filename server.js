@@ -1,18 +1,32 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const express = require('express')
+const cors = require('cors')
+const bodyParser = require('body-parser')
+const app = express()
+const mongoose = require('mongoose')
+const port = process.env.PORT || 4000
 
-dotenv.config({path: './config.env'});
-const app = require('./app')
+app.use(bodyParser.json())
+app.use(cors())
+app.use(
+    bodyParser.urlencoded({
+        extended: false
+    })
+)
+
+const mongoURI = 'mongodb://localhost:27017/todoAPP'
 
 mongoose
-    .connect(process.env.DATABASE, {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useFindAndModify: false
-    })
-    .then(() => console.log("DB connection successful!"))
+    .connect(
+        mongoURI,
+        { useNewUrlParser: true, useUnifiedTopology: true, createIndex: true }
+    )
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log(err))
 
-const port = process.env.PORT || 4000;
-    app.listen(port, () => {
-        console.log(`app running on port ${port}...`)
-    });
+const Users = require('./routes/user.route')
+
+app.use('/users', Users)
+
+app.listen(port, function() {
+    console.log('Server is running on port: ' + port)
+})

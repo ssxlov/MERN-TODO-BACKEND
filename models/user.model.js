@@ -19,29 +19,6 @@ const userSchema = new Schema({
         required: [true, 'PasswordShouldExist'],
         minlength: 6
     },
-    passwordConfirm: {
-        type: String,
-        validate: {
-            validator: function(confirm) {
-                if (!this.isModified('password')) return true;
-                return confirm === this.password;
-            },
-            message: 'PasswordsShouldBeTheSame'
-        }
-    },
-    refreshToken: String,
-    todos: [{type: Schema.Types.ObjectId, ref: 'User'}]
 });
-
-userSchema.pre('save', async function(next) {
-    if (!this.isModified('password')) return next();
-    this.password = await bcrypt.hash(this.password, 12);
-    this.passwordConfirm = null;
-    next();
-});
-
-userSchema.methods.isPasswordCorrect = async function (candidate) {
-    return await bcrypt.compare(candidate, this.password);
-};
 
 module.exports = model('User', userSchema);
