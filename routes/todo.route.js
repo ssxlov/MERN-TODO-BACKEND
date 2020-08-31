@@ -8,7 +8,8 @@ console.log(router)
 router.route('/users/:userId/todos')
     .post(todoController.createTodo)
     .patch(todoController.completeAllTodos)
-    .delete(todoController.deleteCompletedTodos);
+    .delete(todoController.deleteCompletedTodos)
+    .get(todoController.getTodos);
 
 router.route('/users/:userId/todos/:todoId')
     .patch(todoController.toggleTodo)

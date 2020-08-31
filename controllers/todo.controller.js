@@ -47,6 +47,28 @@ const deleteTodo = async (req, res) => {
         res.status(400).json({ status: 'DeletingFailed', error: e.message })
     }
 };
+
+const getTodos = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        if (!userId) {
+            return res.status(400).json({ status: 'InvalidData', error: 'UserIdNotFound' });
+        }
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(400).json({ status: 'InvalidData', error: 'UserNotFound' });
+        }
+
+        const todo = await Todo.find({ user: userId });
+
+        await user.todos.unshift(todo._id);
+        await user.save();
+        res.status(201).json(todo);
+    } catch (e) {
+        res.status(400).json({ status: 'fail', error: e.message })
+    }
+}
+
 const toggleTodo = async (req, res) => {
     try {
         const todoId = req.params.todoId;
@@ -70,6 +92,7 @@ const toggleTodo = async (req, res) => {
         res.status(400).json({ status: 'TogglingFailed', error: e.message })
     }
 };
+
 const completeAllTodos = async (req, res) => {
     try {
         const userId = req.params.userId;
@@ -88,7 +111,6 @@ const completeAllTodos = async (req, res) => {
         res.json({ status: 'Fail', error: e.message })
     }
 };
-
 
 const deleteCompletedTodos = async (req, res) => {
 
@@ -111,6 +133,7 @@ module.exports = {
     createTodo,
     deleteTodo,
     toggleTodo,
+    getTodos,
     completeAllTodos,
     deleteCompletedTodos
 };
