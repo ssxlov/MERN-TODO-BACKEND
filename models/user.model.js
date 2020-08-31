@@ -19,6 +19,7 @@ const userSchema = new Schema({
         required: [true, 'PasswordShouldExist'],
         minlength: 6
     },
+    todos: [{type: Schema.Types.ObjectID, ref: 'Todo'}]
 });
 
 module.exports = model('User', userSchema);

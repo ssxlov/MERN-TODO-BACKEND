@@ -14,7 +14,6 @@ app.use(
 )
 
 const mongoURI = 'mongodb://localhost:27017/todoAPP'
-
 mongoose
     .connect(
         mongoURI,
@@ -24,8 +23,10 @@ mongoose
     .catch(err => console.log(err))
 
 const Users = require('./routes/user.route')
+const Todos = require('./routes/todo.route')
 
 app.use('/users', Users)
+app.use('', Todos)
 
 app.listen(port, function() {
     console.log('Server is running on port: ' + port)
