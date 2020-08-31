@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const validator = require('validator');
+const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs');
 
 const userSchema = new Schema({
@@ -19,6 +20,7 @@ const userSchema = new Schema({
         required: [true, 'PasswordShouldExist'],
         minlength: 6
     },
+    todos: [{type: Schema.Types.ObjectID,  ref: 'Todo'}],
 });
 
 module.exports = model('User', userSchema);
