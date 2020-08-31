@@ -11,3 +11,4 @@ exports.getUser = async (req, res) => {
         res.status(400).json({status: 'Fail', error: e.message})
     }
 }
+

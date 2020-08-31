@@ -13,7 +13,7 @@ const createTodo = async (req, res) => {
             return res.status(400).json({ status: 'InvalidData', error: 'UserNotFound' });
         }
         const todo = await Todo.create({ title: req.body.title, user: userId });
-        console.log(user, todo._id);
+
         await user.todos.unshift(todo._id);
         await user.save();
         res.status(201).json(todo);
@@ -23,6 +23,7 @@ const createTodo = async (req, res) => {
     }
 };
 const deleteTodo = async (req, res) => {
+
     const todoId = req.params.todoId;
     if (!todoId) {
         return res.status(400).json({ status: 'InvalidData', error: 'TodoIdNotFound' });
@@ -32,10 +33,12 @@ const deleteTodo = async (req, res) => {
         if (!userId) {
             return res.status(400).json({ status: 'InvalidData', error: 'UserIdNotFound' });
         }
+
         const user = await User.findById(userId);
         if (!user) {
             return res.status(400).json({ status: 'InvalidData', error: 'UserNotFound' });
         }
+
         await Todo.deleteOne({_id: todoId});
         await user.todos.pull(todoId);
         await user.save();
@@ -47,13 +50,20 @@ const deleteTodo = async (req, res) => {
 const toggleTodo = async (req, res) => {
     try {
         const todoId = req.params.todoId;
+
         if (!todoId) {
             return res.status(400).json({ status: 'InvalidData', error: 'TodoIdNotFound' });
         }
+
+        if (!todoId) {
+            return res.status(400).json({ status: 'InvalidData', error: 'TodoIdNotFound' });
+        }
+
         const todo = await Todo.findById(todoId);
         if (!todo) {
             return res.status(400).json({ status: 'InvalidData', error: 'TodoNotFound' });
         }
+
         await todo.toggleComplete();
         res.json({ status: 'Toggled' });
     } catch (e) {
@@ -66,7 +76,9 @@ const completeAllTodos = async (req, res) => {
         if (!userId) {
             return res.status(400).json({ status: 'InvalidData', error: 'UserIdNotFound' });
         }
+
         const user = await User.findById(userId);
+
         if (!user) {
             return res.status(400).json({ status: 'InvalidData', error: 'UserNotFound' });
         }
@@ -76,7 +88,10 @@ const completeAllTodos = async (req, res) => {
         res.json({ status: 'Fail', error: e.message })
     }
 };
+
+
 const deleteCompletedTodos = async (req, res) => {
+
     const userId = req.params.userId;
     if (!userId) {
         return res.status(400).json({ status: 'InvalidData', error: 'UserIdNotFound' });
