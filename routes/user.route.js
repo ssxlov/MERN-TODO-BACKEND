@@ -60,7 +60,6 @@ users.post('/login', (req, res) => {
                         token,
                         userId
                     })
-
                 } else {
                     res.json({error: 'User does not exist'})
                 }

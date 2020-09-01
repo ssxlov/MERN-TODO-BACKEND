@@ -13,9 +13,9 @@ const createTodo = async (req, res) => {
             return res.status(400).json({ status: 'InvalidData', error: 'UserNotFound' });
         }
         const todo = await Todo.create({ title: req.body.title, user: userId });
-
         await user.todos.unshift(todo._id);
         await user.save();
+        // localStorage.setItem('todoId', todo._id)
         res.status(201).json(todo);
     }
     catch (e) {
