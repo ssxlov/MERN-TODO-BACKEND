@@ -15,7 +15,6 @@ const createTodo = async (req, res) => {
         const todo = await Todo.create({ title: req.body.title, user: userId });
         await user.todos.unshift(todo._id);
         await user.save();
-        // localStorage.setItem('todoId', todo._id)
         res.status(201).json(todo);
     }
     catch (e) {
@@ -23,7 +22,7 @@ const createTodo = async (req, res) => {
     }
 };
 const deleteTodo = async (req, res) => {
-
+    console.log("delete WORK")
     const todoId = req.params.todoId;
     if (!todoId) {
         return res.status(400).json({ status: 'InvalidData', error: 'TodoIdNotFound' });

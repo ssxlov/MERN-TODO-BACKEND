@@ -50,15 +50,18 @@ users.post('/login', (req, res) => {
                 if (bcrypt.compareSync(req.body.password, user.password)) {
                     const payload = {
                         _id: user._id,
-                        email: user.email
+                        email: user.email,
+                        todos: user.todos
                     }
                     let userId = user._id
                     let token = jwt.sign(payload, process.env.SECRET_KEY, {
                         expiresIn: '15m'
                     })
+                    let todos = user.todos
                     res.json({
                         token,
-                        userId
+                        userId,
+                        todos
                     })
                 } else {
                     res.json({error: 'User does not exist'})
