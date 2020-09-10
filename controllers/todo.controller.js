@@ -13,7 +13,7 @@ const createTodo = async (req, res) => {
             return res.status(400).json({ status: 'InvalidData', error: 'UserNotFound' });
         }
         const todo = await Todo.create({ title: req.body.title, user: userId });
-        await user.todos.unshift(todo._id);
+        await user.todos.push({_id: todo._id, title: todo.title, completed: todo.completed});
         await user.save();
         res.status(201).json(todo);
     }
@@ -58,9 +58,9 @@ const getTodos = async (req, res) => {
             return res.status(400).json({ status: 'InvalidData', error: 'UserNotFound' });
         }
 
-        const todo = await Todo.find({ user: userId });
+        const todo = await Todo.find({ title: req.body.title, user: userId });
 
-        await user.todos.unshift(todo._id);
+        await user.todos.push({_id: todo._id, title: todo.title, completed: todo.completed});
         await user.save();
         res.status(201).json(todo);
     } catch (e) {

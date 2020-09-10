@@ -13,7 +13,7 @@ const todoSchema = new Schema({
         type: Boolean,
         default: false
     },
-    user: {type: Schema.Types.ObjectId, ref: 'User'}
+    user: {type: Schema.Types.Object, ref: 'User'}
 });
 
 todoSchema.methods.toggleComplete = async function () {
